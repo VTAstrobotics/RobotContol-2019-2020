@@ -6,7 +6,7 @@
  *  password: aresbot17
  *  Arduino UNO WiFi -> static IP: 10.0.0.122
  */
-#define ASTRO_SSID "Team_44"
+#define ASTRO_SSID "Team_11"
 #define ASTRO_PASS "aresbot17"
 #define UDP_PORT_NUM 4210
 
