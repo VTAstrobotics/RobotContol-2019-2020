@@ -1,0 +1,2 @@
+#define SECRET_SSID "ASTRO"
+#define SECRET_PASS "VTISFORME"
