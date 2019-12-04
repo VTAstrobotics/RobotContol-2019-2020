@@ -1,12 +1,18 @@
-#include <SPI.h>
+
+//l#include <LiquidCrystal.h>
+//#include <WiFi.h>
+#include <WiFiUdp.h>
 #include <WiFiNINA.h>
+
+#include <SPI.h>
+//#include <WiFiNINA.h>
 #include <WiFiUdp.h>
 #include <Servo.h>
 
 #define DEBUG 1
 
 #include "robot_vars.h"
-#include "VescUart.h"
+//#include "VescUart.h"
 #include "datatypes.h"
 
 // WiFi Settings
@@ -25,7 +31,7 @@ Servo rightDrive;
 Servo bucketDig;
 Servo bucketLift;
 
-struct bldcMeasure measuredValues;
+//struct bldcMeasure measuredValues;
 
 float readBattVolt() {
   int rawVoltageReading = analogRead(VOLT_SENSOR);
@@ -81,7 +87,9 @@ void dumpActuators(dump_dir dmp_dir) {
 
 /* Wireless Setup */
 void connectWifi() {
-  if (WiFi.status() == WL_NO_MODULE) {
+  char *ssid = "Team_11";
+  char *pass = "aresbot17";
+  if (WiFi.status() == WL_CONNECT_FAILED) {
     #ifdef DEBUG
     Serial.println("Communication with WiFi module failed!");
     #endif
@@ -98,8 +106,8 @@ void connectWifi() {
     Serial.print("Connecting to SSID: ");
     Serial.println(ASTRO_SSID);
     #endif
-    wstatus = WiFi.begin(ASTRO_SSID, ASTRO_PASS);
-
+    wstatus = WiFi.begin(ssid, pass);
+    Serial.println(wstatus);
     delay(5000);
   }
   
@@ -143,7 +151,7 @@ void blinkSuccessWifi() {
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-  Serial1.begin(115200);
+  //Serial1.begin(115200);
   pinMode(R_LED, OUTPUT);
   pinMode(G_LED, OUTPUT);
   pinMode(B_LED, OUTPUT);
@@ -165,6 +173,9 @@ void setup() {
 void loop() {
   packetBuffer[0] = '$';
   readWifi();
+  #ifdef DEBUG
+  Serial.println((char*) packetBuffer);
+  #endif
   /* FAILURE: kill actuator power (relay off) */
   if (strcmp((char *) packetBuffer, "FAILURE") == 0) {
     #ifdef DEBUG
